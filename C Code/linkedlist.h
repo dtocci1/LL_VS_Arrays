@@ -1,6 +1,6 @@
+// Linked List functions
 #ifndef LINKEDLIST_H_   /* Include guard */
 #define LINKEDLIST_H_
-// Linked List functions
 struct Node
 {
     short testData;
@@ -128,8 +128,13 @@ short ll_getLength(struct Node** head)
     return length;
 }
 
-void ll_merge() {
-    //idk if i even need this
+void ll_merge(struct Node** head1, struct Node** head2) {
+    struct Node *ptr = *head1;
+
+    while(ptr->next != NULL)
+        ptr = ptr->next;
+
+    ptr->next = *head2;
 }
 
 void ll_printList(struct Node** head) {
