@@ -7,7 +7,7 @@
 #define TEST_LENGTH 5       // array and linked-list length for test
 #define TEST_CYCLES 100000  // run operation this many times, average time
 #define OPERATION "temp"    // operation to be tested
-#define SEED 5              // seed for random numbers, allows for repeatability
+#define SEED 5 //time(0);   // seed for random numbers, allows for repeatability
 
 void main() {
     time_t startTime, endTime;
@@ -19,13 +19,11 @@ void main() {
     short array1[TEST_LENGTH] = {};
     short array2[TEST_LENGTH] = {};
 
-    srand(SEED);
+    srand(SEED); 
 
     // Populate arrays with random data
-    for (short i = 0; i < TEST_LENGTH; i++) {
-        array1[i] = rand()
-
-    }
+    for (short i = 0; i < TEST_LENGTH; i++) 
+        array1[i] = rand() % 32000; // generate 0 to 32000 - approximate max for short
 
     // Populate linked list data
     for (short i = 0; i < TEST_LENGTH; i++) {
