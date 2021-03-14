@@ -105,6 +105,19 @@ void ll_removeFromIndex(struct Node** head, short index) {
     ptr->next = nextCell;
 }
 
+void ll_deleteList(struct Node** head) {
+    struct Node *current;
+    struct Node *next;
+
+    while(current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    
+    *head = NULL;
+}
+
 void ll_replaceIndex(struct Node** head, short index, short data) {
     struct Node *ptr = *head;
 
