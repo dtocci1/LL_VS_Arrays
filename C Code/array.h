@@ -3,7 +3,7 @@
 #define ARRAY_H_
 void a_insertAtIndex(short array[], short data, short index, short length) {
     // Shifts elements in array to insert element, assumes there is room in the array
-    for(short i = length-2; i>=index; i--)
+    for(short i = length-1; i>=index; i--)
         array[i+1] = array[i];
     array[index] = data;
 }

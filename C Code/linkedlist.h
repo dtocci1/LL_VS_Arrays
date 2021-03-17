@@ -54,18 +54,18 @@ void ll_insertEnd(struct Node** head, short data) {
 }
 
 void ll_insertAtIndex(struct Node** head, short index, short data) {
-    struct Node *ptr = NULL;
-    struct Node *oldPtr = NULL;
+    struct Node *prevPtr = NULL;
+    struct Node *nextPtr = NULL;
     struct Node *temp;
 
     if(*head == NULL)
         return;
+    prevPtr = *head;
 
-    ptr = *head;
     for (short i=0;i<index-1;i++)
-        ptr = ptr->next;
+        prevPtr = prevPtr->next;
 
-    oldPtr = ptr->next;
+    nextPtr = prevPtr->next;
     temp = (struct Node *) malloc (sizeof(struct Node));
 
     if (temp == NULL) {
@@ -73,8 +73,14 @@ void ll_insertAtIndex(struct Node** head, short index, short data) {
         exit(0);
     }
 
-    ptr->next = temp;
-    temp->next = oldPtr;
+    if (index == 0) {
+        temp->next = *head; // point new element to the first element
+        *head = temp; // point head to new element
+        return;
+    }
+
+    prevPtr->next = temp;
+    temp->next = nextPtr;
     temp->testData = data;
 }
 
@@ -95,9 +101,15 @@ void ll_removeFromIndex(struct Node** head, short index) {
 
     if (*head == NULL)
         return;
-    
-    // Traverse to cell before removal
+
     ptr = *head;
+    if (index == 0) {
+        *head = ptr->next;
+        free(ptr);
+        return;
+    }
+    // Traverse to cell before removal
+
     for(short i=0; i<index-1; i++)
         ptr = ptr->next;
     nextCell = ptr->next->next;
