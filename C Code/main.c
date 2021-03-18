@@ -22,9 +22,9 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 1024    // array and linked-list length for test
+#define TEST_LENGTH 10   // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 2         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
@@ -123,7 +123,7 @@ void main() {
     case 2:
         for (int i=0; i<TEST_CYCLES; i++) {
             testData = rand() % 32000;
-
+            
             ll_runTest(&head1, 2, 0, testData, &llStart);
             a_runTest(array1, 2, 0, testData, &aStart);
             
@@ -181,20 +181,63 @@ void main() {
 
     // ************************** REMOVE *********************************
     case 3: 
+        for(int i = 0; i < TEST_CYCLES; i++) {
             
-            // Remove at START
+            ll_runTest(&head1, 3, 0, NULL, &llStart);
+            a_runTest(array1, 3, 0, NULL, &aStart);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at 1/8
+            ll_runTest(&head1, 3, 1/8*TEST_LENGTH, NULL, &llOneEigth);
+            a_runTest(array1, 3, 1/8*TEST_LENGTH, NULL, &aOneEigth);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at 1/4
+            ll_runTest(&head1, 3, 1/4*TEST_LENGTH, NULL, &llOneFourth);
+            a_runTest(array1, 3, 1/4*TEST_LENGTH, NULL, &aOneFourth);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at 1/2
+            ll_runTest(&head1, 3, 1/2*TEST_LENGTH, NULL, &llOneHalf);
+            a_runTest(array1, 3, 1/2*TEST_LENGTH, NULL, &aOneHalf);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at 3/4
+            ll_runTest(&head1, 3, 3/4*TEST_LENGTH, NULL, &llThreeFourth);
+            a_runTest(array1, 3, 3/4*TEST_LENGTH, NULL, &aThreeFourth);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at 7/8
+            ll_runTest(&head1, 3, 7/8*TEST_LENGTH, NULL, &llSevenEigth);
+            a_runTest(array1, 3, 7/8*TEST_LENGTH, NULL, &aSevenEigth);
+            ll_insertFront(&head1,rand() % 32000); 
 
-            // Remove at END
+            ll_runTest(&head1, 3, TEST_LENGTH-1, NULL, &llEnd);
+            a_runTest(array1, 3, TEST_LENGTH, NULL, &aEnd);
+            ll_insertFront(&head1,rand() % 32000); 
+
+            displayProgressBar(i);
+        }
+
+        // Average results
+        llStart       = llStart       / TEST_LENGTH;
+        aStart        = aStart        / TEST_LENGTH;
+        llOneEigth    = llOneEigth    / TEST_LENGTH;
+        aOneEigth     = aOneEigth     / TEST_LENGTH;
+        llOneFourth   = llOneFourth   / TEST_LENGTH;
+        aOneFourth    = aOneFourth    / TEST_LENGTH;
+        llOneHalf     = llOneHalf     / TEST_LENGTH;
+        aOneHalf      = aOneHalf      / TEST_LENGTH;
+        llThreeFourth = llThreeFourth / TEST_LENGTH;
+        aThreeFourth  = aThreeFourth  / TEST_LENGTH;
+        llSevenEigth  = llSevenEigth  / TEST_LENGTH;
+        aSevenEigth   = aSevenEigth   / TEST_LENGTH;
+        llEnd         = llEnd         / TEST_LENGTH;
+        aEnd          = aEnd          / TEST_LENGTH;
+
+        // Display results (or pipe to text file maybe)
+        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneFourth,aOneFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneHalf,aOneHalf);
+        printf("LL: %1.12lf A: %1.12lf\n",llThreeFourth,aThreeFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llSevenEigth,aSevenEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llEnd,aEnd);
 
         break;
 
@@ -255,7 +298,10 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short testData
         *timePassed += elapsedTime();
         break;
     case 3:
-
+        tik();
+        ll_removeFromIndex(head, testPoint);
+        tok();
+        *timePassed += elapsedTime();
         break;
     case 4:
         
@@ -281,7 +327,10 @@ void a_runTest(short array[], int operation, int testPoint, short testData, doub
         *timePassed += elapsedTime();
         break;
     case 3:
-
+        tik();
+        a_removeFromIndex(array,testPoint,TEST_LENGTH);
+        tok();
+        *timePassed += elapsedTime();
         break;
     case 4:
         

@@ -98,7 +98,8 @@ short ll_traverseToIndex(struct Node** head, short index) {
 void ll_removeFromIndex(struct Node** head, short index) {
     struct Node *ptr = NULL;
     struct Node *nextCell = NULL;
-
+    struct Node *prevCell = NULL;
+    
     if (*head == NULL)
         return;
 
@@ -112,9 +113,13 @@ void ll_removeFromIndex(struct Node** head, short index) {
 
     for(short i=0; i<index-1; i++)
         ptr = ptr->next;
+
+
     nextCell = ptr->next->next;
-    free(ptr->next);
-    ptr->next = nextCell;
+    prevCell = ptr;
+    ptr = ptr->next;
+    free(ptr);
+    prevCell->next = nextCell;
 }
 
 void ll_deleteList(struct Node** head) {
