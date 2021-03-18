@@ -9,8 +9,6 @@
  * Desc: add l8r
  * 
  * TO DO:
- *      * Add runTest(operation, TEST_LENGTH)  
- *          runs test and returns elapsed time (prevents copy pasting tik()tok() over and over)
  *      * Verify ll_insertAtIndex() is inserting efficiently
  *          currently insert at front and end take significantly longer, doesn't make sense
  *      * Complete code for other 4 operations
