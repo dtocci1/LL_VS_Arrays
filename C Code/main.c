@@ -8,7 +8,15 @@
  * 
  * Desc: add l8r
  * 
- */
+ * TO DO:
+ *      * Add runTest(operation, TEST_LENGTH)  
+ *          runs test and returns elapsed time (prevents copy pasting tik()tok() over and over)
+ *      * Verify ll_insertAtIndex() is inserting efficiently
+ *          currently insert at front and end take significantly longer, doesn't make sense
+ *      * Complete code for other 4 operations
+ *      * Allow option to pipe results to text file
+ *      * POSSIBLY add in sorting test, not sure which
+ */     
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +33,9 @@
 void tik();
 void tok();
 double elapsedTime();
+void displayProgressBar(int);
+void ll_runTest(struct Node** head, int operation, int testPoint, short testData, double *timePassed);
+void a_runTest(short array[], int operation, int testPoint, short testData, double *timePassed);
 
 clock_t runTime;
 
@@ -34,20 +45,18 @@ void main() {
     double llAvgInsertFront, llAvgInsertEnd, aAvg = 0;
     double llStart, llOneEigth, llOneFourth, llOneHalf, llThreeFourth, llSevenEigth, llEnd = 0;
     double aStart, aOneEigth, aOneFourth, aOneHalf, aThreeFourth, aSevenEigth, aEnd = 0;
-
+    short testData = 0; // used for insert/modify tests
 
     struct Node* head1 = NULL; // front of the linked-list 1
     struct Node* head2 = NULL; // front of the linked-list 2
     short array1[TEST_LENGTH] = {};
     short array2[TEST_LENGTH] = {};
-    srand(SEED); // Initialize randomizer seed (can be random or set based on SEED definition)
-    double testData = 0; // used for insert/modify tests
-
 
     // ***********************************************************************
     // ************************** POPULATE DATA ******************************
     // ***********************************************************************
 
+    srand(SEED); // Initialize randomizer seed (can be random or set based on SEED definition)
 
     // Populate arrays with random data (only if this isn't being tested later)
     if (operation != 1) {
@@ -117,96 +126,31 @@ void main() {
         for (int i=0; i<TEST_CYCLES; i++) {
             testData = rand() % 32000;
 
-            // Insert at START
-            tik();
-            ll_insertAtIndex(&head1,0, testData);
-            tok();
-            llStart += elapsedTime();
-            tik();
-
-            tik();
-            a_insertAtIndex(array1, testData, 0, TEST_LENGTH);
-            tok();
-            aStart += elapsedTime();
+            ll_runTest(&head1, 2, 0, testData, &llStart);
+            a_runTest(array1, 2, 0, testData, &aStart);
             
-            // Insert at 1/8
-            tik();
-            ll_insertAtIndex(&head1,1/8*TEST_LENGTH, testData);
-            tok();
-            llOneEigth += elapsedTime();
-            tik();
+            ll_runTest(&head1, 2, 1/8*TEST_LENGTH, testData, &llOneEigth);
+            a_runTest(array1, 2, 1/8*TEST_LENGTH, testData, &aOneEigth);
 
-            tik();
-            a_insertAtIndex(array1, testData, 1/8*TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aOneEigth += elapsedTime();
+            ll_runTest(&head1, 2, 1/4*TEST_LENGTH, testData, &llOneFourth);
+            a_runTest(array1, 2, 1/4*TEST_LENGTH, testData, &aOneFourth);
 
-            // Insert at 1/4
-            tik();
-            ll_insertAtIndex(&head1,1/4*TEST_LENGTH, testData);
-            tok();
-            llOneFourth += elapsedTime();
-            tik();
+            ll_runTest(&head1, 2, 1/2*TEST_LENGTH, testData, &llOneHalf);
+            a_runTest(array1, 2, 1/2*TEST_LENGTH, testData, &aOneHalf);
 
-            tik();
-            a_insertAtIndex(array1, testData, 1/4*TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aOneFourth += elapsedTime();
+            ll_runTest(&head1, 2, 3/4*TEST_LENGTH, testData, &llThreeFourth);
+            a_runTest(array1, 2, 3/4*TEST_LENGTH, testData, &aThreeFourth);
 
-            // Insert at 1/2
-            tik();
-            ll_insertAtIndex(&head1,1/2*TEST_LENGTH, testData);
-            tok();
-            llOneHalf += elapsedTime();
-            tik();
+            ll_runTest(&head1, 2, 7/8*TEST_LENGTH, testData, &llSevenEigth);
+            a_runTest(array1, 2, 7/8*TEST_LENGTH, testData, &aSevenEigth);
 
-            tik();
-            a_insertAtIndex(array1, testData, 1/2*TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aOneHalf += elapsedTime();
-
-            // Insert at 3/4
-            tik();
-            ll_insertAtIndex(&head1,3/4*TEST_LENGTH, testData);
-            tok();
-            llThreeFourth += elapsedTime();
-            tik();
-
-            tik();
-            a_insertAtIndex(array1, testData, 3/4*TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aThreeFourth += elapsedTime();
-
-            // Insert at 7/8
-            tik();
-            ll_insertAtIndex(&head1,7/8*TEST_LENGTH, testData);
-            tok();
-            llSevenEigth += elapsedTime();
-            tik();
-
-            tik();
-            a_insertAtIndex(array1, testData, 7/8*TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aSevenEigth += elapsedTime();
-
-            // Insert at END
-            tik();
-            ll_insertAtIndex(&head1,TEST_LENGTH, testData);
-            tok();
-            llEnd += elapsedTime();
-            tik();
-
-            tik();
-            a_insertAtIndex(array1, testData, TEST_LENGTH, TEST_LENGTH);
-            tok();
-            aEnd += elapsedTime();
+            ll_runTest(&head1, 2, TEST_LENGTH, testData, &llEnd);
+            a_runTest(array1, 2, TEST_LENGTH, testData, &aEnd);
 
             // Remove inserted elements from linked-list
             for(int j=0; j<7; j++)
                 ll_removeFromIndex(&head1,j); // removes first 7 elements inserted, allows for even comparison
 
-            //ll_printList(&head1);
-            //a_print(array1, TEST_LENGTH);
             displayProgressBar(i);
         }
         
@@ -304,3 +248,53 @@ float round(float var)
     return (float)value / 100; 
 } 
   
+void ll_runTest(struct Node** head, int operation, int testPoint, short testData, double *timePassed) {
+    switch(operation) {
+    case 2:
+        tik();
+        ll_insertAtIndex(head,testPoint,testData);
+        tok();
+        *timePassed += elapsedTime();
+        break;
+    case 3:
+
+        break;
+    case 4:
+        
+        break;
+    case 5:
+        
+        break;
+    case 6:
+        
+        break;
+    default:
+        break;
+    }
+    
+}
+
+void a_runTest(short array[], int operation, int testPoint, short testData, double *timePassed) {
+    switch(operation) {
+    case 2:
+        tik();
+        a_insertAtIndex(array, testData, testPoint, TEST_LENGTH);
+        tok();
+        *timePassed += elapsedTime();
+        break;
+    case 3:
+
+        break;
+    case 4:
+        
+        break;
+    case 5:
+        
+        break;
+    case 6:
+        
+        break;
+    default:
+        break;
+    }   
+}
