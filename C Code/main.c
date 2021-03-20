@@ -14,6 +14,7 @@
  *      * Complete code for other 4 operations
  *      * Allow option to pipe results to text file
  *      * POSSIBLY add in sorting test, not sure which
+ *      * TIME PASSED IS += IN FUNCTIONS THATS WHY IT TAKES FOREVER AT CERTAIN THINGS FIX *****************88
  */     
 
 #include <stdio.h>
@@ -243,7 +244,11 @@ void main() {
 
     // ************************** TRAVERSE *******************************
     case 4:
+        for(int i=0; i < TEST_CYCLES; i++) {
+            ll_runTest(&head1, 4, 0, NULL, &llStart);
+            a_runTest(array1, 4, 0, NULL, &aStart);
 
+        }
         break;
 
     // ************************** REPLACE ********************************
@@ -333,7 +338,11 @@ void a_runTest(short array[], int operation, int testPoint, short *testData, dou
         *timePassed += elapsedTime();
         break;
     case 4:
-        
+        tik();
+        array[testPoint];
+        tok();
+        *timePassed +=
+
         break;
     case 5:
         
