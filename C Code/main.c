@@ -22,7 +22,7 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 10   // array and linked-list length for test
+#define TEST_LENGTH 1024    // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
 #define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
@@ -32,8 +32,8 @@ void tik();
 void tok();
 double elapsedTime();
 void displayProgressBar(int);
-void ll_runTest(struct Node** head, int operation, int testPoint, short testData, double *timePassed);
-void a_runTest(short array[], int operation, int testPoint, short testData, double *timePassed);
+void ll_runTest(struct Node** head, int operation, int testPoint, short *testData, double *timePassed);
+void a_runTest(short array[], int operation, int testPoint, short *testData, double *timePassed);
 
 clock_t runTime;
 
@@ -124,26 +124,26 @@ void main() {
         for (int i=0; i<TEST_CYCLES; i++) {
             testData = rand() % 32000;
             
-            ll_runTest(&head1, 2, 0, testData, &llStart);
-            a_runTest(array1, 2, 0, testData, &aStart);
+            ll_runTest(&head1, 2, 0, &testData, &llStart);
+            a_runTest(array1, 2, 0, &testData, &aStart);
             
-            ll_runTest(&head1, 2, 1/8*TEST_LENGTH, testData, &llOneEigth);
-            a_runTest(array1, 2, 1/8*TEST_LENGTH, testData, &aOneEigth);
+            ll_runTest(&head1, 2, 1/8*TEST_LENGTH, &testData, &llOneEigth);
+            a_runTest(array1, 2, 1/8*TEST_LENGTH, &testData, &aOneEigth);
 
-            ll_runTest(&head1, 2, 1/4*TEST_LENGTH, testData, &llOneFourth);
-            a_runTest(array1, 2, 1/4*TEST_LENGTH, testData, &aOneFourth);
+            ll_runTest(&head1, 2, 1/4*TEST_LENGTH, &testData, &llOneFourth);
+            a_runTest(array1, 2, 1/4*TEST_LENGTH, &testData, &aOneFourth);
 
-            ll_runTest(&head1, 2, 1/2*TEST_LENGTH, testData, &llOneHalf);
-            a_runTest(array1, 2, 1/2*TEST_LENGTH, testData, &aOneHalf);
+            ll_runTest(&head1, 2, 1/2*TEST_LENGTH, &testData, &llOneHalf);
+            a_runTest(array1, 2, 1/2*TEST_LENGTH, &testData, &aOneHalf);
 
-            ll_runTest(&head1, 2, 3/4*TEST_LENGTH, testData, &llThreeFourth);
-            a_runTest(array1, 2, 3/4*TEST_LENGTH, testData, &aThreeFourth);
+            ll_runTest(&head1, 2, 3/4*TEST_LENGTH, &testData, &llThreeFourth);
+            a_runTest(array1, 2, 3/4*TEST_LENGTH, &testData, &aThreeFourth);
 
-            ll_runTest(&head1, 2, 7/8*TEST_LENGTH, testData, &llSevenEigth);
-            a_runTest(array1, 2, 7/8*TEST_LENGTH, testData, &aSevenEigth);
+            ll_runTest(&head1, 2, 7/8*TEST_LENGTH, &testData, &llSevenEigth);
+            a_runTest(array1, 2, 7/8*TEST_LENGTH, &testData, &aSevenEigth);
 
-            ll_runTest(&head1, 2, TEST_LENGTH, testData, &llEnd);
-            a_runTest(array1, 2, TEST_LENGTH, testData, &aEnd);
+            ll_runTest(&head1, 2, TEST_LENGTH, &testData, &llEnd);
+            a_runTest(array1, 2, TEST_LENGTH, &testData, &aEnd);
 
             // Remove inserted elements from linked-list
             for(int j=0; j<7; j++)
@@ -289,11 +289,11 @@ float round(float var)
     return (float)value / 100; 
 } 
   
-void ll_runTest(struct Node** head, int operation, int testPoint, short testData, double *timePassed) {
+void ll_runTest(struct Node** head, int operation, int testPoint, short *testData, double *timePassed) {
     switch(operation) {
     case 2:
         tik();
-        ll_insertAtIndex(head,testPoint,testData);
+        ll_insertAtIndex(head,testPoint,*testData);
         tok();
         *timePassed += elapsedTime();
         break;
@@ -318,11 +318,11 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short testData
     
 }
 
-void a_runTest(short array[], int operation, int testPoint, short testData, double *timePassed) {
+void a_runTest(short array[], int operation, int testPoint, short *testData, double *timePassed) { // add pointer so we can pass NULL without C yelling at us
     switch(operation) {
     case 2:
         tik();
-        a_insertAtIndex(array, testData, testPoint, TEST_LENGTH);
+        a_insertAtIndex(array, *testData, testPoint, TEST_LENGTH);
         tok();
         *timePassed += elapsedTime();
         break;
