@@ -9,14 +9,10 @@
  * Desc: add l8r
  * 
  * TO DO:
- *      * Verify ll_insertAtIndex() is inserting efficiently
- *          currently insert at front and end take significantly longer, doesn't make sense
+ *      * FIX: Edge case from ll_removeFromIndex. Doesn't work when using last index (TEST_LENGTH)
  *      * Complete code for other 4 operations
  *      * Allow option to pipe results to text file
  *      * POSSIBLY add in sorting test, not sure which
- *      * TIME PASSED IS += IN FUNCTIONS THATS WHY IT TAKES FOREVER AT CERTAIN THINGS FIX *****************88, this isn't the fix i don't think
- *          * SOMETHING IS WRONG WITH LLEND, when inserting to end of ll, it takes waaay more time and also increases time taken to insert at front. not sure why
- *          * insertion points were stored as ints. When multiplying by 1/8,3/8 etc. it essentially multiplied by 0 as 1 / 8 as int is 0
 */
 
 #include <stdio.h>
@@ -25,9 +21,9 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 1024    // array and linked-list length for test
+#define TEST_LENGTH 10    // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 2         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
@@ -39,7 +35,6 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short *testDat
 void a_runTest(short array[], int operation, int testPoint, short *testData, double *timePassed);
 
 clock_t runTime;
-int temp = 0; 
 
 void main() {
     double executionTime, averageTime;
@@ -75,48 +70,9 @@ void main() {
         for (short i = 0; i < TEST_LENGTH; i++) 
             ll_insertEnd(&head2, rand() % 32000);
     }
-    // DEBUGGING CODE BELOW
     
-    //testData = 5;
-    for (int i=0; i<1000; i++) {
-            testData = rand() % 32000;
-            ll_runTest(&head1,2,testPoints[0],&testData,&llStart);
-
-            ll_runTest(&head1, 2, testPoints[1], &testData, &llOneEigth);
-           // a_runTest(array1, 2, 1/8*TEST_LENGTH, &testData, &aOneEigth);
-
-            ll_runTest(&head1, 2, testPoints[2], &testData, &llOneFourth);
-            //a_runTest(array1, 2, 1/4*TEST_LENGTH, &testData, &aOneFourth);
-
-            ll_runTest(&head1, 2, testPoints[3], &testData, &llOneHalf);
-            //a_runTest(array1, 2, 1/2*TEST_LENGTH, &testData, &aOneHalf);
-
-            ll_runTest(&head1, 2, testPoints[4], &testData, &llThreeFourth);
-            //a_runTest(array1, 2, 3/4*TEST_LENGTH, &testData, &aThreeFourth);
-
-            ll_runTest(&head1, 2, testPoints[5], &testData, &llSevenEigth);
-            //a_runTest(array1, 2, 7/8*TEST_LENGTH, &testData, &aSevenEigth);
-
-            ll_runTest(&head1, 2, testPoints[6], &testData, &llEnd);
-            //a_runTest(array1, 2, TEST_LENGTH, &testData, &aEnd);
-    }
-        llStart       = llStart       / 1000;
-        llOneEigth    = llOneEigth    / 1000;
-        llOneFourth   = llOneFourth   / 1000;
-        llOneHalf     = llOneHalf     / 1000;
-        llThreeFourth = llThreeFourth / 1000;
-        llSevenEigth  = llSevenEigth  / 1000;
-        llEnd         = llEnd         / 1000;
-        printf("%1.12lf\n",llStart);
-        printf("%1.12lf\n",llOneEigth);
-        printf("%1.12lf\n",llOneFourth);
-        printf("%1.12lf\n",llOneHalf);
-        printf("%1.12lf\n",llThreeFourth);
-        printf("%1.12lf\n",llSevenEigth);
-        printf("%1.12lf\n",llEnd);
-        a_print(testPoints,7);
-
-    return; 
+    ll_removeFromIndex(&head1, TEST_LENGTH);
+    return;
 
     // ***********************************************************************
     // ************************** RUN TESTS **********************************
@@ -169,31 +125,26 @@ void main() {
         for (int i=0; i<TEST_CYCLES; i++) {
             testData = rand() % 32000;
             
-            //ll_runTest(&head1, 2, 0, &testData, &llStart);
-            tik();
-            ll_insertAtIndex(&head1,0,testData);
-            tok();
-            llStart += elapsedTime();
+            ll_runTest(&head1, 2, testPoints[0], &testData, &llStart);
+            a_runTest(array1, 2, testPoints[0], &testData, &aStart);
             
-            a_runTest(array1, 2, 0, &testData, &aStart);
-            
-            ll_runTest(&head1, 2, 1/8*TEST_LENGTH, &testData, &llOneEigth);
-            a_runTest(array1, 2, 1/8*TEST_LENGTH, &testData, &aOneEigth);
+            ll_runTest(&head1, 2, testPoints[1], &testData, &llOneEigth);
+            a_runTest(array1, 2, testPoints[1], &testData, &aOneEigth);
 
-            ll_runTest(&head1, 2, 1/4*TEST_LENGTH, &testData, &llOneFourth);
-            a_runTest(array1, 2, 1/4*TEST_LENGTH, &testData, &aOneFourth);
+            ll_runTest(&head1, 2, testPoints[2], &testData, &llOneFourth);
+            a_runTest(array1, 2, testPoints[2], &testData, &aOneFourth);
 
-            ll_runTest(&head1, 2, 1/2*TEST_LENGTH, &testData, &llOneHalf);
-            a_runTest(array1, 2, 1/2*TEST_LENGTH, &testData, &aOneHalf);
+            ll_runTest(&head1, 2, testPoints[3], &testData, &llOneHalf);
+            a_runTest(array1, 2, testPoints[3], &testData, &aOneHalf);
 
-            ll_runTest(&head1, 2, 3/4*TEST_LENGTH, &testData, &llThreeFourth);
-            a_runTest(array1, 2, 3/4*TEST_LENGTH, &testData, &aThreeFourth);
+            ll_runTest(&head1, 2, testPoints[4], &testData, &llThreeFourth);
+            a_runTest(array1, 2, testPoints[4], &testData, &aThreeFourth);
 
-            ll_runTest(&head1, 2, 7/8*TEST_LENGTH, &testData, &llSevenEigth);
-            a_runTest(array1, 2, 7/8*TEST_LENGTH, &testData, &aSevenEigth);
+            ll_runTest(&head1, 2, testPoints[5], &testData, &llSevenEigth);
+            a_runTest(array1, 2, testPoints[5], &testData, &aSevenEigth);
 
-            ll_runTest(&head1, 2, TEST_LENGTH, &testData, &llEnd);
-            a_runTest(array1, 2, TEST_LENGTH, &testData, &aEnd);
+            ll_runTest(&head1, 2, testPoints[6], &testData, &llEnd);
+            a_runTest(array1, 2, testPoints[6], &testData, &aEnd);
 
             displayProgressBar(i);
         }
@@ -229,53 +180,45 @@ void main() {
     case 3: 
         for(int i = 0; i < TEST_CYCLES; i++) {
             
-            ll_runTest(&head1, 3, 0, NULL, &llStart);
-            a_runTest(array1, 3, 0, NULL, &aStart);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[0], NULL, &llStart);
+            a_runTest(array1, 3, testPoints[0], NULL, &aStart);
 
-            ll_runTest(&head1, 3, 1/8*TEST_LENGTH, NULL, &llOneEigth);
-            a_runTest(array1, 3, 1/8*TEST_LENGTH, NULL, &aOneEigth);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[1], NULL, &llOneEigth);
+            a_runTest(array1, 3, testPoints[1], NULL, &aOneEigth);
 
-            ll_runTest(&head1, 3, 1/4*TEST_LENGTH, NULL, &llOneFourth);
-            a_runTest(array1, 3, 1/4*TEST_LENGTH, NULL, &aOneFourth);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[2], NULL, &llOneFourth);
+            a_runTest(array1, 3, testPoints[2], NULL, &aOneFourth);
 
-            ll_runTest(&head1, 3, 1/2*TEST_LENGTH, NULL, &llOneHalf);
-            a_runTest(array1, 3, 1/2*TEST_LENGTH, NULL, &aOneHalf);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[3], NULL, &llOneHalf);
+            a_runTest(array1, 3, testPoints[3], NULL, &aOneHalf);
 
-            ll_runTest(&head1, 3, 3/4*TEST_LENGTH, NULL, &llThreeFourth);
-            a_runTest(array1, 3, 3/4*TEST_LENGTH, NULL, &aThreeFourth);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[4], NULL, &llThreeFourth);
+            a_runTest(array1, 3, testPoints[4], NULL, &aThreeFourth);
 
-            ll_runTest(&head1, 3, 7/8*TEST_LENGTH, NULL, &llSevenEigth);
-            a_runTest(array1, 3, 7/8*TEST_LENGTH, NULL, &aSevenEigth);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[5], NULL, &llSevenEigth);
+            a_runTest(array1, 3, testPoints[5], NULL, &aSevenEigth);
 
-            ll_runTest(&head1, 3, TEST_LENGTH-1, NULL, &llEnd);
-            a_runTest(array1, 3, TEST_LENGTH, NULL, &aEnd);
-            ll_insertFront(&head1,rand() % 32000); 
+            ll_runTest(&head1, 3, testPoints[6], NULL, &llEnd);
+            a_runTest(array1, 3, testPoints[6], NULL, &aEnd);
 
             displayProgressBar(i);
         }
 
         // Average results
-        llStart       = llStart       / TEST_LENGTH;
-        aStart        = aStart        / TEST_LENGTH;
-        llOneEigth    = llOneEigth    / TEST_LENGTH;
-        aOneEigth     = aOneEigth     / TEST_LENGTH;
-        llOneFourth   = llOneFourth   / TEST_LENGTH;
-        aOneFourth    = aOneFourth    / TEST_LENGTH;
-        llOneHalf     = llOneHalf     / TEST_LENGTH;
-        aOneHalf      = aOneHalf      / TEST_LENGTH;
-        llThreeFourth = llThreeFourth / TEST_LENGTH;
-        aThreeFourth  = aThreeFourth  / TEST_LENGTH;
-        llSevenEigth  = llSevenEigth  / TEST_LENGTH;
-        aSevenEigth   = aSevenEigth   / TEST_LENGTH;
-        llEnd         = llEnd         / TEST_LENGTH;
-        aEnd          = aEnd          / TEST_LENGTH;
-
+        llStart       = llStart       / TEST_CYCLES;
+        aStart        = aStart        / TEST_CYCLES;
+        llOneEigth    = llOneEigth    / TEST_CYCLES;
+        aOneEigth     = aOneEigth     / TEST_CYCLES;
+        llOneFourth   = llOneFourth   / TEST_CYCLES;
+        aOneFourth    = aOneFourth    / TEST_CYCLES;
+        llOneHalf     = llOneHalf     / TEST_CYCLES;
+        aOneHalf      = aOneHalf      / TEST_CYCLES;
+        llThreeFourth = llThreeFourth / TEST_CYCLES;
+        aThreeFourth  = aThreeFourth  / TEST_CYCLES;
+        llSevenEigth  = llSevenEigth  / TEST_CYCLES;
+        aSevenEigth   = aSevenEigth   / TEST_CYCLES;
+        llEnd         = llEnd         / TEST_CYCLES;
+        aEnd          = aEnd          / TEST_CYCLES;
         // Display results (or pipe to text file maybe)
         printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
         printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
@@ -342,8 +285,6 @@ float round(float var)
 void ll_runTest(struct Node** head, int operation, int testPoint, short *testData, double *timePassed) {
     switch(operation) {
     case 2:
-        if(testPoint == TEST_LENGTH)
-            temp++;
         tik();
         ll_insertAtIndex(head,testPoint,*testData);
         tok();
@@ -355,7 +296,7 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short *testDat
         ll_removeFromIndex(head, testPoint);
         tok();
         *timePassed += elapsedTime();
-        ll_insertAtIndex(head,testPoint,rand()%32000); // reinsert data to removed point 
+        ll_insertFront(head,rand()%32000); // reinsert data to removed point 
         break;
     case 4:
         
