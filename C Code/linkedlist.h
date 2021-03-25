@@ -62,10 +62,6 @@ void ll_insertAtIndex(struct Node** head, short index, short data) {
         return;
     prevPtr = *head;
 
-    for (short i=0;i<index-1;i++)
-        prevPtr = prevPtr->next;
-
-    nextPtr = prevPtr->next;
     temp = (struct Node *) malloc (sizeof(struct Node));
 
     if (temp == NULL) {
@@ -75,9 +71,15 @@ void ll_insertAtIndex(struct Node** head, short index, short data) {
 
     if (index == 0) {
         temp->next = *head; // point new element to the first element
+        temp->testData = data;
         *head = temp; // point head to new element
         return;
     }
+
+    for (short i=0;i<index-1;i++)
+        prevPtr = prevPtr->next;
+
+    nextPtr = prevPtr->next;
 
     prevPtr->next = temp;
     temp->next = nextPtr;
