@@ -22,7 +22,7 @@
 
 #define TEST_LENGTH 1024    // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define OPERATION 6         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
@@ -47,6 +47,7 @@ void main() {
     struct Node* head2 = NULL; // front of the linked-list 2
     short array1[TEST_LENGTH] = {};
     short array2[TEST_LENGTH] = {};
+    short mergedArray[TEST_LENGTH * 2] = {};
     short testPoints[7] = {0,(double)1/8*TEST_LENGTH, (double)1/4*TEST_LENGTH, (double)1/2*TEST_LENGTH, (double)3/4*TEST_LENGTH, (double)7/8*TEST_LENGTH, TEST_LENGTH-1};
 
     // ***********************************************************************
@@ -176,7 +177,6 @@ void main() {
     // ************************** REMOVE *********************************
     case 3: 
         for(int i = 0; i < TEST_CYCLES; i++) {
-            
             ll_runTest(&head1, 3, testPoints[0], NULL, &llStart);
             a_runTest(array1, 3, testPoints[0], NULL, &aStart);
 
@@ -230,19 +230,148 @@ void main() {
     // ************************** TRAVERSE *******************************
     case 4:
         for(int i=0; i < TEST_CYCLES; i++) {
-            ll_runTest(&head1, 4, 0, NULL, &llStart);
-            a_runTest(array1, 4, 0, NULL, &aStart);
+            ll_runTest(&head1, 4, testPoints[0], NULL, &llStart);
+            a_runTest(array1, 4, testPoints[0], NULL, &aStart);
 
+            ll_runTest(&head1, 4, testPoints[1], NULL, &llOneEigth);
+            a_runTest(array1, 4, testPoints[1], NULL, &aOneEigth);
+
+            ll_runTest(&head1, 4, testPoints[2], NULL, &llOneFourth);
+            a_runTest(array1, 4, testPoints[2], NULL, &aOneFourth);
+
+            ll_runTest(&head1, 4, testPoints[3], NULL, &llOneHalf);
+            a_runTest(array1, 4, testPoints[3], NULL, &aOneHalf);
+
+            ll_runTest(&head1, 4, testPoints[4], NULL, &llThreeFourth);
+            a_runTest(array1, 4, testPoints[4], NULL, &aThreeFourth);
+
+            ll_runTest(&head1, 4, testPoints[5], NULL, &llSevenEigth);
+            a_runTest(array1, 4, testPoints[5], NULL, &aSevenEigth);
+
+            ll_runTest(&head1, 4, testPoints[6], NULL, &llEnd);
+            a_runTest(array1, 4, testPoints[6], NULL, &aEnd);
+
+            displayProgressBar(i);
         }
+
+        // Average results
+        llStart       = llStart       / TEST_CYCLES;
+        aStart        = aStart        / TEST_CYCLES;
+        llOneEigth    = llOneEigth    / TEST_CYCLES;
+        aOneEigth     = aOneEigth     / TEST_CYCLES;
+        llOneFourth   = llOneFourth   / TEST_CYCLES;
+        aOneFourth    = aOneFourth    / TEST_CYCLES;
+        llOneHalf     = llOneHalf     / TEST_CYCLES;
+        aOneHalf      = aOneHalf      / TEST_CYCLES;
+        llThreeFourth = llThreeFourth / TEST_CYCLES;
+        aThreeFourth  = aThreeFourth  / TEST_CYCLES;
+        llSevenEigth  = llSevenEigth  / TEST_CYCLES;
+        aSevenEigth   = aSevenEigth   / TEST_CYCLES;
+        llEnd         = llEnd         / TEST_CYCLES;
+        aEnd          = aEnd          / TEST_CYCLES;
+
+        // Display results (or pipe to text file maybe)
+        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneFourth,aOneFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneHalf,aOneHalf);
+        printf("LL: %1.12lf A: %1.12lf\n",llThreeFourth,aThreeFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llSevenEigth,aSevenEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llEnd,aEnd);
+
         break;
 
     // ************************** REPLACE ********************************
     case 5:
+        for(int i=0; i < TEST_CYCLES; i++) {
+            testData = rand() % 32000;
+
+            ll_runTest(&head1, 5, testPoints[0], &testData, &llStart);
+            a_runTest(array1, 5, testPoints[0], &testData, &aStart);
+
+            ll_runTest(&head1, 5, testPoints[1], &testData, &llOneEigth);
+            a_runTest(array1, 5, testPoints[1], &testData, &aOneEigth);
+
+            ll_runTest(&head1, 5, testPoints[2], &testData, &llOneFourth);
+            a_runTest(array1, 5, testPoints[2], &testData, &aOneFourth);
+
+            ll_runTest(&head1, 5, testPoints[3], &testData, &llOneHalf);
+            a_runTest(array1, 5, testPoints[3], &testData, &aOneHalf);
+
+            ll_runTest(&head1, 5, testPoints[4], &testData, &llThreeFourth);
+            a_runTest(array1, 5, testPoints[4], &testData, &aThreeFourth);
+
+            ll_runTest(&head1, 5, testPoints[5], &testData, &llSevenEigth);
+            a_runTest(array1, 5, testPoints[5], &testData, &aSevenEigth);
+
+            ll_runTest(&head1, 5, testPoints[6], &testData, &llEnd);
+            a_runTest(array1, 5, testPoints[6], &testData, &aEnd);
+
+            displayProgressBar(i);
+        }
+
+        // Average results
+        llStart       = llStart       / TEST_CYCLES;
+        aStart        = aStart        / TEST_CYCLES;
+        llOneEigth    = llOneEigth    / TEST_CYCLES;
+        aOneEigth     = aOneEigth     / TEST_CYCLES;
+        llOneFourth   = llOneFourth   / TEST_CYCLES;
+        aOneFourth    = aOneFourth    / TEST_CYCLES;
+        llOneHalf     = llOneHalf     / TEST_CYCLES;
+        aOneHalf      = aOneHalf      / TEST_CYCLES;
+        llThreeFourth = llThreeFourth / TEST_CYCLES;
+        aThreeFourth  = aThreeFourth  / TEST_CYCLES;
+        llSevenEigth  = llSevenEigth  / TEST_CYCLES;
+        aSevenEigth   = aSevenEigth   / TEST_CYCLES;
+        llEnd         = llEnd         / TEST_CYCLES;
+        aEnd          = aEnd          / TEST_CYCLES;
+
+        // Display results (or pipe to text file maybe)
+        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneFourth,aOneFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llOneHalf,aOneHalf);
+        printf("LL: %1.12lf A: %1.12lf\n",llThreeFourth,aThreeFourth);
+        printf("LL: %1.12lf A: %1.12lf\n",llSevenEigth,aSevenEigth);
+        printf("LL: %1.12lf A: %1.12lf\n",llEnd,aEnd);
 
         break;
     
     // ************************** MERGE **********************************
     case 6:
+        for(int i = 0; i < TEST_CYCLES; i++) {
+            tik();
+            ll_merge(&head1,&head2);
+            tok();
+            llStart += elapsedTime();
+
+            tik();
+            a_merge(array1,TEST_LENGTH,array2,TEST_LENGTH,mergedArray);
+            tok();
+            aStart += elapsedTime();
+
+            //Rewrite linked list and arrays with new data
+            ll_deleteList(&head1);
+            ll_deleteList(&head2);
+            for (short i = 0; i < TEST_LENGTH; i++)
+                array1[i] = rand() % 32000;
+            for (short i = 0; i < TEST_LENGTH; i++)
+                array2[i] = rand() % 32000;
+
+            // Populate linked list data - front insert
+            for (short i = 0; i < TEST_LENGTH; i++) 
+                ll_insertFront(&head1,rand() % 32000);
+
+            // Populate linked list data - back insert
+            for (short i = 0; i < TEST_LENGTH; i++) 
+                ll_insertEnd(&head2, rand() % 32000);
+
+            displayProgressBar(i);
+        }
+
+        llStart       = llStart       / TEST_CYCLES;
+        aStart        = aStart        / TEST_CYCLES;
+        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
 
         break;
     }
@@ -296,15 +425,19 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short *testDat
         ll_insertFront(head,rand()%32000); // reinsert data to removed point 
         break;
     case 4:
-        
+        tik();
+        ll_traverseToIndex(head,testPoint);
+        tok();
+        *timePassed += elapsedTime();    
         break;
     case 5:
-        
-        break;
-    case 6:
-        
+        tik();
+        ll_replaceIndex(head, testPoint, *testData);
+        tok();
+        *timePassed += elapsedTime();
         break;
     default:
+        printf("ERROR: Invalid operation");
         break;
     }
     
@@ -328,16 +461,16 @@ void a_runTest(short array[], int operation, int testPoint, short *testData, dou
         tik();
         array[testPoint];
         tok();
-//        *timePassed +=
-
+        *timePassed += elapsedTime();
         break;
     case 5:
-        
-        break;
-    case 6:
-        
+        tik();
+        array[testPoint] = *testData;
+        tok();
+        *timePassed += elapsedTime();
         break;
     default:
+        printf("ERROR: Invalid operation");
         break;
     }   
 }
