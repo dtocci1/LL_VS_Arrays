@@ -76,11 +76,11 @@ void ll_insertAtIndex(struct Node** head, short index, short data) {
         return;
     }
 
-    for (short i=0;i<index-1;i++)
+    for (short i=0;i<index-1;i++) 
         prevPtr = prevPtr->next;
+    
 
     nextPtr = prevPtr->next;
-
     prevPtr->next = temp;
     temp->next = nextPtr;
     temp->testData = data;
@@ -98,30 +98,27 @@ short ll_traverseToIndex(struct Node** head, short index) {
 }
 
 void ll_removeFromIndex(struct Node** head, short index) {
-    struct Node *ptr = NULL;
-    struct Node *nextCell = NULL;
+    struct Node *temp = NULL;
     struct Node *prevCell = NULL;
     
     if (*head == NULL)
         return;
 
-    ptr = *head;
+    temp = *head;
     if (index == 0) {
-        *head = ptr->next;
-        free(ptr);
+        *head = temp->next;
+        free(temp);
         return;
     }
     // Traverse to cell before removal
 
-    for(short i=0; i<index-1; i++)
-        ptr = ptr->next;
-
-
-    nextCell = ptr->next->next;
-    prevCell = ptr;
-    ptr = ptr->next;
-    free(ptr);
-    prevCell->next = nextCell;
+    for(short i=0; i<index-1; i++) 
+        temp = temp->next;
+    
+    prevCell = temp;
+    prevCell->next = temp->next->next;
+    temp = temp->next;
+    free(temp);
 }
 
 void ll_deleteList(struct Node** head) {

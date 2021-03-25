@@ -9,7 +9,6 @@
  * Desc: add l8r
  * 
  * TO DO:
- *      * FIX: Edge case from ll_removeFromIndex. Doesn't work when using last index (TEST_LENGTH)
  *      * Complete code for other 4 operations
  *      * Allow option to pipe results to text file
  *      * POSSIBLY add in sorting test, not sure which
@@ -21,7 +20,7 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 10    // array and linked-list length for test
+#define TEST_LENGTH 1024    // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
 #define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
@@ -33,6 +32,7 @@ double elapsedTime();
 void displayProgressBar(int);
 void ll_runTest(struct Node** head, int operation, int testPoint, short *testData, double *timePassed);
 void a_runTest(short array[], int operation, int testPoint, short *testData, double *timePassed);
+float shortRound(float var);
 
 clock_t runTime;
 
@@ -47,7 +47,7 @@ void main() {
     struct Node* head2 = NULL; // front of the linked-list 2
     short array1[TEST_LENGTH] = {};
     short array2[TEST_LENGTH] = {};
-    short testPoints[7] = {0,(double)1/8*TEST_LENGTH, (double)1/4*TEST_LENGTH, (double)1/2*TEST_LENGTH, (double)3/4*TEST_LENGTH, (double)7/8*TEST_LENGTH, TEST_LENGTH};
+    short testPoints[7] = {0,(double)1/8*TEST_LENGTH, (double)1/4*TEST_LENGTH, (double)1/2*TEST_LENGTH, (double)3/4*TEST_LENGTH, (double)7/8*TEST_LENGTH, TEST_LENGTH-1};
 
     // ***********************************************************************
     // ************************** POPULATE DATA ******************************
@@ -70,9 +70,6 @@ void main() {
         for (short i = 0; i < TEST_LENGTH; i++) 
             ll_insertEnd(&head2, rand() % 32000);
     }
-    
-    ll_removeFromIndex(&head1, TEST_LENGTH);
-    return;
 
     // ***********************************************************************
     // ************************** RUN TESTS **********************************
@@ -270,13 +267,13 @@ void displayProgressBar(int currentCycle) {
     percentage =  (double)currentCycle / TEST_CYCLES;
     prevPercent = (double)currentCycle / TEST_CYCLES-1; 
 
-    if (round(percentage) != round(prevPercent)) { // only print % if it is a new %
+    if (shortRound(percentage) != shortRound(prevPercent)) { // only print % if it is a new %
         system("clear");
         printf("Percentage: %2.2f\n", percentage*100);
     }
 }
 
-float round(float var) 
+float shortRound(float var) 
 { 
     float value = (int)(var * 100 + .5); 
     return (float)value / 100; 
