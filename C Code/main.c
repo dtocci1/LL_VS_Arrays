@@ -6,12 +6,25 @@
  * 
  * Copyright (c) 2021 UMass Dartmouth
  * 
- * Desc: add l8r
+ * Desc: This program directly benchmarks arrays and linked-lists with seven different operations. These are:
+ *      1. Population
+ *      2. Element Insertions
+ *      3. Element Removal
+ *      4. Traversal
+ *      5. Element Replacement
+ *      6. Merging
+ *      7. Quicksort
+ * 
+ * Operations can be changed by changing the value of the OPERATION definition. Additionally, one can change the size of the data using the TEST_LENGTH definition
+ * and the number of times tests are run by using the TEST_CYCLES definition. Lastly, if one requries consistant results, one can change the seed for random
+ * number generation via use of the SEED definition. By default it is set to time(0) to randomize the data, but this can be set to a constant. Currently, the program will
+ * crash on Windows or as the program makes use of the system function, with it running linux commands. This can be fixed in a later iteration if necessary.
  * 
  * TO DO:
- *      * Complete code for other 4 operations
- *      * Allow option to pipe results to text file
- *      * POSSIBLY add in sorting test, not sure which
+ *      * Clean up code
+ *      * Add comments to header file functions
+ *      * Run tests and graph results
+ *      * Add windows/mac support for displayProgress function
 */
 
 #include <stdio.h>
@@ -20,9 +33,9 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 10    // array and linked-list length for test
-#define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 6         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define TEST_LENGTH 1024    // array and linked-list length for test
+#define TEST_CYCLES 1000   // run operation this many times, average time
+#define OPERATION 7         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
@@ -50,6 +63,7 @@ void main() {
     short mergedArray[TEST_LENGTH * 2] = {};
     short testPoints[7] = {0,(double)1/8*TEST_LENGTH, (double)1/4*TEST_LENGTH, (double)1/2*TEST_LENGTH, (double)3/4*TEST_LENGTH, (double)7/8*TEST_LENGTH, TEST_LENGTH-1};
 
+
     // ***********************************************************************
     // ************************** POPULATE DATA ******************************
     // ***********************************************************************
@@ -71,12 +85,6 @@ void main() {
         for (short i = 0; i < TEST_LENGTH; i++) 
             ll_insertEnd(&head2, rand() % 32000);
     }
-
-    a_print(array1,TEST_LENGTH);
-    a_quickSort(array1, 0, TEST_LENGTH-1);
-    a_print(array1, TEST_LENGTH);
-    return;
-
 
 
     // ***********************************************************************
@@ -354,6 +362,44 @@ void main() {
 
             tik();
             a_merge(array1,TEST_LENGTH,array2,TEST_LENGTH,mergedArray);
+            tok();
+            aStart += elapsedTime();
+
+            //Rewrite linked list and arrays with new data
+            ll_deleteList(&head1);
+            ll_deleteList(&head2);
+            for (short i = 0; i < TEST_LENGTH; i++)
+                array1[i] = rand() % 32000;
+            for (short i = 0; i < TEST_LENGTH; i++)
+                array2[i] = rand() % 32000;
+
+            // Populate linked list data - front insert
+            for (short i = 0; i < TEST_LENGTH; i++) 
+                ll_insertFront(&head1,rand() % 32000);
+
+            // Populate linked list data - back insert
+            for (short i = 0; i < TEST_LENGTH; i++) 
+                ll_insertEnd(&head2, rand() % 32000);
+
+            displayProgressBar(i);
+        }
+
+        llStart       = llStart       / TEST_CYCLES;
+        aStart        = aStart        / TEST_CYCLES;
+        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
+
+        break;
+    
+    // ************************** QUICK SORT **********************************
+    case 7:
+        for(int i = 0; i < TEST_CYCLES; i++) {
+            tik();
+            ll_quickSort(&head1, 0, TEST_LENGTH-1);
+            tok();
+            llStart += elapsedTime();
+
+            tik();
+            a_quickSort(array1, 0, TEST_LENGTH-1);
             tok();
             aStart += elapsedTime();
 
