@@ -29,4 +29,49 @@ void a_print(short array[], short length) {
     for (short i = 0; i<length; i++) 
         printf("%d: %d\n",i,array[i]);
 }
+
+// *** QUICK SORT FUNCTIONS ***
+// Functions Pseudocode from GeeksforGeeks:
+//  https://www.geeksforgeeks.org/quick-sort/
+// Modified to work with linked lists
+
+void a_swap(short array[], int index1, int index2) {
+    short temp;
+    temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+}
+
+int a_quickSwap(short array[], short start, short end) {
+    int pivot = 0;
+    int i = 0;
+
+    pivot = array[end];
+    i = start-1;
+    for(int j = start; j <= end - 1; j++){    
+        // If current element is smaller
+        // than the pivot
+        if (array[j] < pivot)
+        {
+             
+            // Increment index of
+            // smaller element
+            i++;
+            a_swap(array, i, j);
+        }
+    }
+    a_swap(array, i+1, end);
+    return (i+1);
+}
+
+void a_quickSort(short array[], short start, short end) {
+    int pivot = 0;
+    if (start < end) {
+        pivot = a_quickSwap(array, start, end);
+
+        a_quickSort(array, start, pivot-1);
+        a_quickSort(array, pivot+1, end);
+    }
+}
+
 #endif // ARRAY_H_

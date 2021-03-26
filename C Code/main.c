@@ -20,7 +20,7 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 1024    // array and linked-list length for test
+#define TEST_LENGTH 10    // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
 #define OPERATION 6         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge
@@ -71,6 +71,13 @@ void main() {
         for (short i = 0; i < TEST_LENGTH; i++) 
             ll_insertEnd(&head2, rand() % 32000);
     }
+
+    a_print(array1,TEST_LENGTH);
+    a_quickSort(array1, 0, TEST_LENGTH-1);
+    a_print(array1, TEST_LENGTH);
+    return;
+
+
 
     // ***********************************************************************
     // ************************** RUN TESTS **********************************

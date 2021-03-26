@@ -184,5 +184,50 @@ void ll_printList(struct Node** head) {
     }
 }
 
+// *** QUICK SORT FUNCTIONS ***
+// Functions Pseudocode from GeeksforGeeks:
+//  https://www.geeksforgeeks.org/quick-sort/
+// Modified to work with linked lists
+
+void ll_swap(struct Node** head, int index1, int index2) {
+    short temp1, temp2;
+    temp1 = ll_traverseToIndex(head, index1);
+    temp2 = ll_traverseToIndex(head, index2);
+    //printf("Swapping %d and %d", temp1, temp2);
+    ll_replaceIndex(head, index1, temp2);
+    ll_replaceIndex(head, index2, temp1);
+}
+
+int ll_quickSwap(struct Node** head, short start, short end) {
+    int pivot = 0;
+    int i = 0;
+
+    pivot = ll_traverseToIndex(head, end);
+    i = start-1;
+    for(int j = start; j <= end - 1; j++){    
+        // If current element is smaller
+        // than the pivot
+        if ((ll_traverseToIndex(head, j)) < pivot)
+        {
+             
+            // Increment index of
+            // smaller element
+            i++;
+            ll_swap(head, i, j);
+        }
+    }
+    ll_swap(head, i+1, end);
+    return (i+1);
+}
+
+void ll_quickSort(struct Node** head, short start, short end) {
+    int pivot = 0;
+    if (start < end) {
+        pivot = ll_quickSwap(head, start, end);
+
+        ll_quickSort(head, start, pivot-1);
+        ll_quickSort(head, pivot+1, end);
+    }
+}
 
 #endif // LINKEDLIST_H_
