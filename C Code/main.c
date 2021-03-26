@@ -6,7 +6,8 @@
  * 
  * Copyright (c) 2021 UMass Dartmouth
  * 
- * Desc: This program directly benchmarks arrays and linked-lists with seven different operations. These are:
+ * Desc: 
+ *  This program directly benchmarks arrays and linked-lists with seven different operations. These are:
  *      1. Population
  *      2. Element Insertions
  *      3. Element Removal

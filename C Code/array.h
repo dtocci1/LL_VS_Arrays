@@ -1,6 +1,17 @@
-// Array functions
+/* Array functions /
+* a_insertAtIndex
+* a_removeFromIndex
+* a_merge
+* a_print
+* - QuickSort Functions -
+* a_swap
+* a_quickSwap
+* a_quickSort
+*/
 #ifndef ARRAY_H_   /* Include guard */
 #define ARRAY_H_
+
+// Insert an element at the specified index in the array
 void a_insertAtIndex(short array[], short data, short index, short length) {
     // Shifts elements in array to insert element, assumes there is room in the array
     for(short i = length-1; i>=index; i--)
@@ -8,6 +19,7 @@ void a_insertAtIndex(short array[], short data, short index, short length) {
     array[index] = data;
 }
 
+// Removes an element from a specified index in the array
 void a_removeFromIndex(short array[], short index, short length) {
     // Navigates to index specified then shifts everything to the left one, "deleting" the cell, leaving room at the end of the array
     for(short i = index; i<length; i++)
@@ -16,6 +28,7 @@ void a_removeFromIndex(short array[], short index, short length) {
 
 }
 
+// Merges to arrays together and saves it in a third array passed to the function (lengths must be equivalent)
 void a_merge(short array1[], short length1, short array2[], short length2, short mergedArray[]) {
     for(short i = 0; i<(length1+length2); i++) {
         if(i < length1)
@@ -25,6 +38,7 @@ void a_merge(short array1[], short length1, short array2[], short length2, short
     }
 }
 
+// Prints out the contents of the cells in the array and their corresponding index
 void a_print(short array[], short length) {
     for (short i = 0; i<length; i++) 
         printf("%d: %d\n",i,array[i]);
