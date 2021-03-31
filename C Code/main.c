@@ -34,9 +34,9 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 8      // array and linked-list length for test
+#define TEST_LENGTH 1024      // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 2         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge, 7 quicksort
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
@@ -180,13 +180,13 @@ void main() {
         aEnd          = aEnd          / TEST_CYCLES;
 
         // Display results (or pipe to text file maybe)
-        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneFourth,aOneFourth);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneHalf,aOneHalf);
-        printf("LL: %1.12lf A: %1.12lf\n",llThreeFourth,aThreeFourth);
-        printf("LL: %1.12lf A: %1.12lf\n",llSevenEigth,aSevenEigth);
-        printf("LL: %1.12lf A: %1.12lf\n",llEnd,aEnd);
+        printf("%1.12lf %1.12lf\n",llStart,aStart);
+        printf("%1.12lf %1.12lf\n",llOneEigth,aOneEigth);
+        printf("%1.12lf %1.12lf\n",llOneFourth,aOneFourth);
+        printf("%1.12lf %1.12lf\n",llOneHalf,aOneHalf);
+        printf("%1.12lf %1.12lf\n",llThreeFourth,aThreeFourth);
+        printf("%1.12lf %1.12lf\n",llSevenEigth,aSevenEigth);
+        printf("%1.12lf %1.12lf\n",llEnd,aEnd);
 
         break;
 
@@ -233,13 +233,13 @@ void main() {
         llEnd         = llEnd         / TEST_CYCLES;
         aEnd          = aEnd          / TEST_CYCLES;
         // Display results (or pipe to text file maybe)
-        printf("LL: %1.12lf A: %1.12lf\n",llStart,aStart);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneEigth,aOneEigth);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneFourth,aOneFourth);
-        printf("LL: %1.12lf A: %1.12lf\n",llOneHalf,aOneHalf);
-        printf("LL: %1.12lf A: %1.12lf\n",llThreeFourth,aThreeFourth);
-        printf("LL: %1.12lf A: %1.12lf\n",llSevenEigth,aSevenEigth);
-        printf("LL: %1.12lf A: %1.12lf\n",llEnd,aEnd);
+        printf("%1.12lf %1.12lf\n",llStart,aStart);
+        printf("%1.12lf %1.12lf\n",llOneEigth,aOneEigth);
+        printf("%1.12lf %1.12lf\n",llOneFourth,aOneFourth);
+        printf("%1.12lf %1.12lf\n",llOneHalf,aOneHalf);
+        printf("%1.12lf %1.12lf\n",llThreeFourth,aThreeFourth);
+        printf("%1.12lf %1.12lf\n",llSevenEigth,aSevenEigth);
+        printf("%1.12lf %1.12lf\n",llEnd,aEnd);
 
         break;
 
