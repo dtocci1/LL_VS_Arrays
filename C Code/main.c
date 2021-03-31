@@ -34,7 +34,7 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 1024      // array and linked-list length for test
+#define TEST_LENGTH 2048      // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
 #define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge, 7 quicksort
@@ -476,7 +476,7 @@ void ll_runTest(struct Node** head, int operation, int testPoint, short *testDat
         ll_removeFromIndex(head, testPoint);
         tok();
         *timePassed += elapsedTime();
-        ll_insertFront(head,rand()%32000); // reinsert data to removed point 
+        ll_insertAtIndex(head, testPoint, rand()%32000); // reinsert data to removed point 
         break;
     case 4:
         tik();
