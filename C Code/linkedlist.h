@@ -134,20 +134,19 @@ void ll_removeFromIndex(struct Node** head, short index) {
     if (*head == NULL)
         return;
 
-    temp = *head;
+    prevCell = *head;
     if (index == 0) {
-        *head = temp->next;
-        free(temp);
+        *head = prevCell->next;
+        free(prevCell);
         return;
     }
-    // Traverse to cell before removal
 
+    // Traverse to cell before removal
     for(short i=0; i<index-1; i++) 
-        temp = temp->next;
+        prevCell = prevCell->next;
     
-    prevCell = temp;
-    prevCell->next = temp->next->next;
-    temp = temp->next;
+    temp = prevCell->next;
+    prevCell->next = temp->next;
     free(temp);
 }
 
