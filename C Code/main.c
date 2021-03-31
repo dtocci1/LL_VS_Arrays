@@ -34,10 +34,10 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 1024    // array and linked-list length for test
-#define TEST_CYCLES 1000   // run operation this many times, average time
-#define OPERATION 7         // operation to be tested, 1-populate, 2-insert, 3-remove, 
-                            // 4-traverse, 5-replace, 6-merge
+#define TEST_LENGTH 8      // array and linked-list length for test
+#define TEST_CYCLES 10000   // run operation this many times, average time
+#define OPERATION 2         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+                            // 4-traverse, 5-replace, 6-merge, 7 quicksort
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
 void tik();
@@ -51,11 +51,11 @@ float shortRound(float var);
 clock_t runTime;
 
 void main() {
-    double executionTime, averageTime;
+    double executionTime = 0, averageTime = 0;
     int operation = OPERATION;
-    double llAvgInsertFront, llAvgInsertEnd, aAvg = 0;
-    double llStart, llOneEigth, llOneFourth, llOneHalf, llThreeFourth, llSevenEigth, llEnd = 0;
-    double aStart, aOneEigth, aOneFourth, aOneHalf, aThreeFourth, aSevenEigth, aEnd = 0;
+    double llAvgInsertFront = 0, llAvgInsertEnd = 0, aAvg = 0;
+    double llStart = 0, llOneEigth = 0, llOneFourth = 0, llOneHalf = 0, llThreeFourth = 0, llSevenEigth = 0, llEnd = 0;
+    double aStart = 0, aOneEigth = 0, aOneFourth = 0, aOneHalf = 0, aThreeFourth = 0, aSevenEigth = 0, aEnd = 0;
     short testData = 0; // used for insert/modify test
     struct Node* head1 = NULL; // front of the linked-list 1
     struct Node* head2 = NULL; // front of the linked-list 2
@@ -129,9 +129,9 @@ void main() {
         llAvgInsertEnd = llAvgInsertEnd / TEST_CYCLES;
         llAvgInsertFront = llAvgInsertFront / TEST_CYCLES;
         aAvg = aAvg / TEST_CYCLES;
-        printf("llIE %lf\n", llAvgInsertEnd);
-        printf("llIF %lf\n", llAvgInsertFront);
-        printf("aAVG %lf\n", aAvg);
+        printf("llIE %1.12lf\n", llAvgInsertEnd);
+        printf("llIF %1.12lf\n", llAvgInsertFront);
+        printf("aAVG %1.12lf\n", aAvg);
         break;
 
     // ************************** INSERT *********************************
