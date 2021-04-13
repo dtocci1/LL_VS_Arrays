@@ -34,9 +34,9 @@
 #include "linkedlist.h" // Header file with ll functions and Node setup
 #include "array.h"      // Header file with array functions 
 
-#define TEST_LENGTH 2048      // array and linked-list length for test
+#define TEST_LENGTH 4096      // array and linked-list length for test
 #define TEST_CYCLES 10000   // run operation this many times, average time
-#define OPERATION 3         // operation to be tested, 1-populate, 2-insert, 3-remove, 
+#define OPERATION 1         // operation to be tested, 1-populate, 2-insert, 3-remove, 
                             // 4-traverse, 5-replace, 6-merge, 7 quicksort
 #define SEED time(0)        // seed for random numbers, gives option for repeatability
 
